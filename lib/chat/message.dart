@@ -18,7 +18,7 @@ class Message extends StatelessWidget {
           child: Text(
             message.text,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ),
