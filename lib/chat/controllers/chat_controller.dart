@@ -25,7 +25,7 @@ class ChatController extends ChangeNotifier {
 
     textController.clear();
     notifyListeners();
-
+    
     await Future.delayed(const Duration(seconds: 2));
 
     messages.add(
