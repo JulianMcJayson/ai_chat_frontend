@@ -1,6 +1,6 @@
-import 'package:ai_chat_frontend/app.dart';
-import 'package:flutter/material.dart';
+import 'package:ai_chat_frontend/dependencies.dart';
 
 void main() {
-  runApp(App());
+  const Dependencies dependencies = Dependencies();
+  dependencies.appInjection();
 }
