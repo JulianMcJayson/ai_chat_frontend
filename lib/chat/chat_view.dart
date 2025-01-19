@@ -1,11 +1,11 @@
 import 'package:ai_chat_frontend/chat/controllers/chat_controller.dart';
-import 'package:ai_chat_frontend/chat/message.dart';
-import 'package:ai_chat_frontend/chat/models/message_response.dart';
+import 'package:ai_chat_frontend/chat/message_view.dart';
+import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Chat extends StatelessWidget {
-  const Chat({super.key});
+class ChatView extends StatelessWidget {
+  const ChatView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,16 @@ class Chat extends StatelessWidget {
         children: [
           Expanded(
               child: GestureDetector(
-              onTap: () {
-                context.read<ChatController>().focusNode.unfocus();
-              },
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Selector<ChatController, List<MessageResponse>>(
-                  selector: (context, controller) =>
-                      controller.messages.reversed.toList(),
-                  builder: (context, messages, child) {
-                    return ListView.separated(
+            onTap: () {
+              context.read<ChatController>().focusNode.unfocus();
+            },
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Selector<ChatController, List<Message>>(
+                selector: (context, controller) =>
+                    controller.messages.reversed.toList(),
+                builder: (context, messages, child) {
+                  return ListView.separated(
                       shrinkWrap: true,
                       reverse: true,
                       padding: const EdgeInsets.only(top: 12, bottom: 20) +
@@ -38,13 +38,12 @@ class Chat extends StatelessWidget {
                           context.read<ChatController>().scrollController,
                       itemCount: messages.length,
                       itemBuilder: (context, index) {
-                        return Message(message: messages[index]);
-                      }
-                    );
-                  },
-                ),
+                        return MessageView(message: messages[index]);
+                      });
+                },
               ),
-            )),
+            ),
+          )),
           const ChatInput(),
         ],
       ),
@@ -96,16 +95,13 @@ class ChatInput extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 0, 
-                right: 0, 
-                child: IconButton(
-                  onPressed: context.read<ChatController>().sendMessage, 
-                  icon: Icon(Icons.send)
-                  )
-                )
+                  bottom: 0,
+                  right: 0,
+                  child: IconButton(
+                      onPressed: context.read<ChatController>().sendMessage,
+                      icon: Icon(Icons.send)))
             ],
           ),
-        )
-      );
+        ));
   }
 }

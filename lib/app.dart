@@ -1,4 +1,4 @@
-import 'package:ai_chat_frontend/chat/chat.dart';
+import 'package:ai_chat_frontend/chat/chat_view.dart';
 import 'package:ai_chat_frontend/chat/controllers/chat_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
         create: (_) => ChatController(),
-        child: const Chat(),
+        child: const ChatView(),
       ),
     );
   }

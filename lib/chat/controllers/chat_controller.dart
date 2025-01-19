@@ -1,8 +1,8 @@
-import 'package:ai_chat_frontend/chat/models/message_response.dart';
+import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
 
 class ChatController extends ChangeNotifier {
-  List<MessageResponse> messages = [];
+  List<Message> messages = [];
 
   late final ScrollController scrollController = ScrollController();
   late final TextEditingController textController = TextEditingController();
@@ -14,9 +14,9 @@ class ChatController extends ChangeNotifier {
     }
 
     messages.add(
-      MessageResponse(
-        text: textController.text,
-        isBot: false,
+      Message(
+        role: "user",
+        content: textController.text,
       ),
     );
 
@@ -25,13 +25,13 @@ class ChatController extends ChangeNotifier {
 
     textController.clear();
     notifyListeners();
-    
+
     await Future.delayed(const Duration(seconds: 2));
 
     messages.add(
-      MessageResponse(
-        text: "Hello, I'm a bot",
-        isBot: true,
+      Message(
+        role: "bot",
+        content: "Hello, how can I help you?",
       ),
     );
 

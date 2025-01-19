@@ -1,11 +1,12 @@
-import 'package:ai_chat_frontend/chat/models/message_response.dart';
+
+import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
 
-class Message extends StatelessWidget {
+class MessageView extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
-  final MessageResponse message;
+  final Message message;
 
-  const Message({super.key, this.margin, required this.message});
+  const MessageView({super.key, this.margin, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Message extends StatelessWidget {
         Container(
           margin: margin ?? EdgeInsets.zero,
           child: Text(
-            message.text,
+            message.content,
             style: TextStyle(
               color: Colors.black,
             ),
@@ -27,5 +28,5 @@ class Message extends StatelessWidget {
   }
 
   MainAxisAlignment get mainAxisAlignment =>
-      message.isBot ? MainAxisAlignment.start : MainAxisAlignment.end;
+      message.role == "bot" ? MainAxisAlignment.start : MainAxisAlignment.end;
 }
