@@ -1,7 +1,14 @@
+import 'package:ai_chat_frontend/chat/models/chat_request.dart';
 import 'package:ai_chat_frontend/chat/models/message.dart';
+import 'package:ai_chat_frontend/chat/repositories/chat_repository.dart';
 import 'package:flutter/material.dart';
 
 class ChatController extends ChangeNotifier {
+  ChatController({
+    required ChatRepository chatRepository,
+  }) : _chatRepository = chatRepository;
+
+  final ChatRepository _chatRepository;
   List<Message> messages = [];
 
   late final ScrollController scrollController = ScrollController();
@@ -13,12 +20,15 @@ class ChatController extends ChangeNotifier {
       return;
     }
 
-    messages.add(
-      Message(
+    ChatRequest message = ChatRequest(
+      model: "4o",
+      message:Message(
         role: "user",
         content: textController.text,
       ),
     );
+
+    messages.add(message.message);
 
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -26,14 +36,9 @@ class ChatController extends ChangeNotifier {
     textController.clear();
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 2));
+    final response = await _chatRepository.sendMessage(message);
 
-    messages.add(
-      Message(
-        role: "bot",
-        content: "Hello, how can I help you?",
-      ),
-    );
+    messages.add(response.choices[0].message);
 
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
