@@ -14,11 +14,14 @@ class ChatController extends ChangeNotifier {
   late final ScrollController scrollController = ScrollController();
   late final TextEditingController textController = TextEditingController();
   late final FocusNode focusNode = FocusNode();
+  late bool onSending = false;
 
   Future<void> sendMessage() async {
     if (!isTextFieldEnable) {
       return;
     }
+
+    onSending = true;
 
     ChatRequest message = ChatRequest(
       model: "gpt-4o-mini",
@@ -42,6 +45,7 @@ class ChatController extends ChangeNotifier {
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
 
+    onSending = false;
     notifyListeners();
   }
 

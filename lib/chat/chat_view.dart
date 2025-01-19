@@ -119,11 +119,13 @@ class ChatInput extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                      onPressed: controller.sendMessage,
-                      icon: Icon(Icons.send)))
+                bottom: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: !controller.onSending ? controller.sendMessage : null,
+                  icon: Icon(!controller.onSending ? Icons.send : Icons.stop)
+                )
+              )
             ],
           ),
         ));
