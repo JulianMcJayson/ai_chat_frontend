@@ -1,5 +1,4 @@
 import 'package:ai_chat_frontend/chat/models/choice.dart';
-import 'package:ai_chat_frontend/chat/models/usage.dart';
 
 class ChatResponse {
   final String id;
@@ -7,8 +6,6 @@ class ChatResponse {
   final int created;
   final String model;
   final List<Choice> choices;
-  final Usage usage;
-  final String systemFingerprint;
 
   const ChatResponse({
     required this.id,
@@ -16,8 +13,6 @@ class ChatResponse {
     required this.created,
     required this.model,
     required this.choices,
-    required this.usage,
-    required this.systemFingerprint,
   });
 
   factory ChatResponse.fromJson(Map<String, dynamic> json) {
@@ -34,8 +29,6 @@ class ChatResponse {
       created: json['created'],
       model: json['model'],
       choices: choices,
-      usage: Usage.fromJson(json['usage']),
-      systemFingerprint: json['system_fingerprint'],
     );
   }
 }

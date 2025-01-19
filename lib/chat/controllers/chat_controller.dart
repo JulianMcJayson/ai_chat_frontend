@@ -21,14 +21,13 @@ class ChatController extends ChangeNotifier {
     }
 
     ChatRequest message = ChatRequest(
-      model: "4o",
-      message:Message(
-        role: "user",
-        content: textController.text,
+      model: "gpt-4o-mini",
+      messages: List<Message>.from(
+        [Message(role: "user", content: textController.text)],
       ),
     );
 
-    messages.add(message.message);
+    messages.add(message.messages[0]);
 
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);

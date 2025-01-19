@@ -4,11 +4,32 @@ import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChatView extends StatelessWidget {
+class ChatView extends StatefulWidget {
   const ChatView({super.key});
 
   @override
+  State<ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<ChatView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // final controller = context.watch<ChatController>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -18,7 +39,7 @@ class ChatView extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-              child: GestureDetector(
+            child: GestureDetector(
             onTap: () {
               context.read<ChatController>().focusNode.unfocus();
             },
@@ -40,11 +61,13 @@ class ChatView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return MessageView(message: messages[index]);
                       });
-                },
+                  },
+                ),
               ),
+              
             ),
-          )),
-          const ChatInput(),
+          ),
+          ChatInput(),
         ],
       ),
     );
@@ -56,6 +79,7 @@ class ChatInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<ChatController>();
     return SafeArea(
         bottom: true,
         child: Container(
@@ -71,9 +95,9 @@ class ChatInput extends StatelessWidget {
           child: Stack(
             children: [
               TextField(
-                focusNode: context.read<ChatController>().focusNode,
-                onChanged: context.read<ChatController>().onFieldChange,
-                controller: context.read<ChatController>().textController,
+                focusNode: controller.focusNode,
+                onChanged: controller.onFieldChange,
+                controller: controller.textController,
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
@@ -98,7 +122,7 @@ class ChatInput extends StatelessWidget {
                   bottom: 0,
                   right: 0,
                   child: IconButton(
-                      onPressed: context.read<ChatController>().sendMessage,
+                      onPressed: controller.sendMessage,
                       icon: Icon(Icons.send)))
             ],
           ),

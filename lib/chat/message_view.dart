@@ -14,12 +14,16 @@ class MessageView extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: margin ?? EdgeInsets.zero,
-          child: Text(
-            message.content,
-            style: TextStyle(
-              color: Colors.black,
+        Flexible(child: 
+          Container(
+            margin: margin ?? EdgeInsets.zero,
+            child: Text(
+              overflow: TextOverflow.clip,
+
+              message.content,
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           ),
         ),
@@ -28,5 +32,5 @@ class MessageView extends StatelessWidget {
   }
 
   MainAxisAlignment get mainAxisAlignment =>
-      message.role == "bot" ? MainAxisAlignment.start : MainAxisAlignment.end;
+      message.role == "assistant" ? MainAxisAlignment.start : MainAxisAlignment.end;
 }
