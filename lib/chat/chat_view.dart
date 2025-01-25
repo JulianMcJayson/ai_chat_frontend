@@ -33,38 +33,37 @@ class _ChatViewState extends State<ChatView> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Chat AI'),
+        title: Text('How may I help you today?'),
         backgroundColor: const Color.fromARGB(255, 141, 183, 255),
       ),
       body: Column(
         children: [
           Expanded(
             child: GestureDetector(
-            onTap: () {
-              context.read<ChatController>().focusNode.unfocus();
-            },
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Selector<ChatController, List<Message>>(
-                selector: (context, controller) =>
-                    controller.messages.reversed.toList(),
-                builder: (context, messages, child) {
-                  return ListView.separated(
-                      shrinkWrap: true,
-                      reverse: true,
-                      padding: const EdgeInsets.only(top: 12, bottom: 20) +
-                          const EdgeInsets.symmetric(horizontal: 12),
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      controller:
-                          context.read<ChatController>().scrollController,
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return MessageView(message: messages[index]);
-                      });
+              onTap: () {
+                context.read<ChatController>().focusNode.unfocus();
+              },
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Selector<ChatController, List<Message>>(
+                  selector: (context, controller) =>
+                      controller.messages.reversed.toList(),
+                  builder: (context, messages, child) {
+                    return ListView.separated(
+                        shrinkWrap: true,
+                        reverse: true,
+                        padding: const EdgeInsets.only(top: 12, bottom: 20) +
+                            const EdgeInsets.symmetric(horizontal: 12),
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        controller:
+                            context.read<ChatController>().scrollController,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          return MessageView(message: messages[index]);
+                        });
                   },
                 ),
               ),
-              
             ),
           ),
           ChatInput(),
@@ -119,13 +118,13 @@ class ChatInput extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 0,
-                right: 0,
-                child: IconButton(
-                  onPressed: !controller.onSending ? controller.sendMessage : null,
-                  icon: Icon(!controller.onSending ? Icons.send : Icons.stop)
-                )
-              )
+                  bottom: 0,
+                  right: 0,
+                  child: IconButton(
+                      onPressed:
+                          !controller.onSending ? controller.sendMessage : null,
+                      icon: Icon(
+                          !controller.onSending ? Icons.send : Icons.stop)))
             ],
           ),
         ));

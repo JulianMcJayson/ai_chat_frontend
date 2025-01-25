@@ -6,11 +6,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "AI Chat",
+        title: "Ask Me",
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const ChatView()
-      );
+        home: const ChatView());
   }
 }

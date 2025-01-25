@@ -37,15 +37,20 @@ class ChatController extends ChangeNotifier {
 
     textController.clear();
     notifyListeners();
+    try {
+      final response = await _chatRepository.sendMessage(message);
+      messages.add(response.choices[0].message);
+      resetInput();
+    } catch (e) {
+      resetInput();
+    }
+  }
 
-    final response = await _chatRepository.sendMessage(message);
-
-    messages.add(response.choices[0].message);
-
+  void resetInput() {
+    onSending = false;
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
 
-    onSending = false;
     notifyListeners();
   }
 

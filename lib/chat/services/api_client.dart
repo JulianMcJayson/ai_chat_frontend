@@ -6,7 +6,8 @@ import 'package:ai_chat_frontend/chat/models/chat_response.dart';
 class ApiClient {
   Future<ChatResponse> sendMessage(ChatRequest message) async {
     final response = await http.post(
-      Uri.parse("http://localhost/api/ai/send-message"),
+      Uri.parse(
+          "http://ec2-98-84-171-179.compute-1.amazonaws.com/api/ai/send-message"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -17,7 +18,8 @@ class ApiClient {
       return ChatResponse.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
     } else {
-      throw Exception("Failed to send message \n code : ${response.statusCode}");
+      throw Exception(
+          "Failed to send message \n code : ${response.statusCode}");
     }
   }
 }
