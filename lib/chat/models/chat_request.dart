@@ -1,18 +1,13 @@
-import 'package:ai_chat_frontend/chat/models/message.dart';
-
 class ChatRequest {
-  final String model;
-  final List<Message> messages;
+  final String message;
 
   const ChatRequest({
-    required this.model,
-    required this.messages,
+    required this.message,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'model': model,
-      'messages': messages.map((e) => e.toJson()).toList(),
+      'message': message,
     };
   }
 }

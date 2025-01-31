@@ -23,14 +23,9 @@ class ChatController extends ChangeNotifier {
 
     onSending = true;
 
-    ChatRequest message = ChatRequest(
-      model: "gpt-4o-mini",
-      messages: List<Message>.from(
-        [Message(role: "user", content: textController.text)],
-      ),
-    );
+    ChatRequest message = ChatRequest(message: textController.text);
 
-    messages.add(message.messages[0]);
+    messages.add(Message(content: textController.text, role: "user"));
 
     scrollController.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -39,7 +34,9 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
     try {
       final response = await _chatRepository.sendMessage(message);
-      messages.add(response.choices[0].message);
+
+      messages.add(response.message);
+
       resetInput();
     } catch (e) {
       resetInput();
