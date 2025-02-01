@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -73,8 +74,23 @@ class _ChatViewState extends State<ChatView> {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 30,
+                    Container(
+                      width: 50,
+                      height: 50,
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.fromRGBO(63, 186, 227, 1),
+                                Color.fromRGBO(51, 122, 200, 1)
+                              ])),
+                      child: CircleAvatar(
+                        radius: 50,
+                      ),
                     ),
                     SizedBox(
                       width: 10,
@@ -94,50 +110,93 @@ class _ChatViewState extends State<ChatView> {
                 ),
               ),
             ),
+            Container(
+              margin: EdgeInsets.all(15),
+              height: 45,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(150),
+                  border: Border.all(
+                    color: Color.fromRGBO(63, 186, 227, 1),
+                    width: 2,
+                  ),
+                ),
+                child: TextButton(
+                    iconAlignment: IconAlignment.start,
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 10,
+                      children: [
+                        GradientIcon(
+                            icon: Icons.add_comment,
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color.fromRGBO(63, 186, 227, 1),
+                                  Color.fromRGBO(51, 122, 200, 1)
+                                ]),
+                            size: 30,
+                            offset: Offset(0, 0)),
+                        GradientText(
+                          'New Chat',
+                          style: GoogleFonts.ibmPlexSansThai(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                          colors: [
+                            Color.fromRGBO(63, 186, 227, 1),
+                            Color.fromRGBO(51, 122, 200, 1)
+                          ],
+                        )
+                      ],
+                    )),
+              ),
+            ),
             SizedBox(
-              height: 50,
-              child: TextButton(
-                  iconAlignment: IconAlignment.start,
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 10,
-                    children: [
-                      GradientIcon(
-                          icon: Icons.add_comment,
-                          gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color.fromRGBO(63, 186, 227, 1),
-                                Color.fromRGBO(51, 122, 200, 1)
-                              ]),
-                          size: 30,
-                          offset: Offset(0, 0)),
-                      Text(
-                        'New Chat',
-                        style: GoogleFonts.ibmPlexSansThai(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                        ),
-                      )
-                    ],
-                  )),
+              height: 10,
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: Text(
+                'Item 1',
+                style: GoogleFonts.ibmPlexSansThai(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+              trailing:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
+              shape: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.shade300,
+                  width: 1,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
-            Divider(),
             ListTile(
-              title: const Text('Item 2'),
+              title: Text(
+                'Item 2',
+                style: GoogleFonts.ibmPlexSansThai(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16),
+              ),
+              trailing:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
+              shape: Border(
+                  bottom: BorderSide(
+                color: Colors.grey.shade300,
+                width: 1,
+              )),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
-            Divider(),
           ],
         ),
       ),
