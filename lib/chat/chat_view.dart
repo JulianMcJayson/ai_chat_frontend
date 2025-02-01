@@ -2,7 +2,9 @@ import 'package:ai_chat_frontend/chat/controllers/chat_controller.dart';
 import 'package:ai_chat_frontend/chat/message_view.dart';
 import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_icon/gradient_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -29,45 +31,151 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = context.watch<ChatController>();
+    final controller = context.watch<ChatController>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('How may I help you today?'),
-        backgroundColor: const Color.fromARGB(255, 141, 183, 255),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                context.read<ChatController>().focusNode.unfocus();
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+        actions: [
+          IconButton(
+              onPressed: () {
+                controller.clearMessages();
               },
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Selector<ChatController, List<Message>>(
-                  selector: (context, controller) =>
-                      controller.messages.reversed.toList(),
-                  builder: (context, messages, child) {
-                    return ListView.separated(
-                        shrinkWrap: true,
-                        reverse: true,
-                        padding: const EdgeInsets.only(top: 12, bottom: 20) +
-                            const EdgeInsets.symmetric(horizontal: 12),
-                        separatorBuilder: (_, __) => const SizedBox(height: 12),
-                        controller:
-                            context.read<ChatController>().scrollController,
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          return MessageView(message: messages[index]);
-                        });
-                  },
+              icon: const Icon(Icons.add_comment)),
+          IconButton(
+            icon: const Icon(Icons.more_horiz),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            SizedBox(
+              height: 100,
+              child: DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Me',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Spacer(
+                      flex: 1,
+                    ),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.settings))
+                  ],
                 ),
               ),
             ),
-          ),
-          ChatInput(),
-        ],
+            SizedBox(
+              height: 50,
+              child: TextButton(
+                  iconAlignment: IconAlignment.start,
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10,
+                    children: [
+                      GradientIcon(
+                          icon: Icons.add_comment,
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.fromRGBO(63, 186, 227, 1),
+                                Color.fromRGBO(51, 122, 200, 1)
+                              ]),
+                          size: 30,
+                          offset: Offset(0, 0)),
+                      Text(
+                        'New Chat',
+                        style: GoogleFonts.ibmPlexSansThai(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
+                  )),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Divider(),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  context.read<ChatController>().focusNode.unfocus();
+                },
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Selector<ChatController, List<Message>>(
+                    selector: (context, controller) =>
+                        controller.messages.reversed.toList(),
+                    builder: (context, messages, child) {
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          reverse: true,
+                          padding: const EdgeInsets.only(top: 12, bottom: 20) +
+                              const EdgeInsets.symmetric(horizontal: 12),
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          controller:
+                              context.read<ChatController>().scrollController,
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) {
+                            return MessageView(message: messages[index]);
+                          });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            ChatInput(),
+          ],
+        ),
       ),
     );
   }
@@ -82,12 +190,15 @@ class ChatInput extends StatelessWidget {
     return SafeArea(
         bottom: true,
         child: Container(
-          constraints: const BoxConstraints(minHeight: 48),
+          constraints: const BoxConstraints(minHeight: 120),
           width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Color.fromARGB(255, 235, 243, 248),
             border: Border(
               top: BorderSide(
-                color: Colors.grey.shade300,
+                color: Colors.white,
               ),
             ),
           ),
@@ -106,7 +217,12 @@ class ChatInput extends StatelessWidget {
                     left: 16,
                     top: 18,
                   ),
-                  hintText: "Type a message",
+                  hintText: "พิมพ์ข้อความ...",
+                  hintStyle: GoogleFonts.ibmPlexSansThai(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Color.fromRGBO(49, 59, 65, 1),
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(8.0),
@@ -123,8 +239,20 @@ class ChatInput extends StatelessWidget {
                   child: IconButton(
                       onPressed:
                           !controller.onSending ? controller.sendMessage : null,
-                      icon: Icon(
-                          !controller.onSending ? Icons.send : Icons.stop)))
+                      icon: !controller.onSending
+                          ? GradientIcon(
+                              icon: Icons.send,
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color.fromRGBO(63, 186, 227, 1),
+                                    Color.fromRGBO(51, 122, 200, 1)
+                                  ]),
+                              size: 30,
+                              offset: Offset(0, 0),
+                            )
+                          : Icon(Icons.stop)))
             ],
           ),
         ));

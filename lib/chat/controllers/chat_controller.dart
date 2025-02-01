@@ -51,6 +51,11 @@ class ChatController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearMessages() {
+    messages.clear();
+    notifyListeners();
+  }
+
   void onFieldChange(String term) {
     notifyListeners();
   }

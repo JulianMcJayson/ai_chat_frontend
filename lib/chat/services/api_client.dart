@@ -8,7 +8,7 @@ import 'package:ai_chat_frontend/chat/models/chat_response.dart';
 class ApiClient {
   Future<ChatResponse> sendMessage(ChatRequest message) async {
     final response = await http.post(
-      Uri.parse("http://localhost:8080/api/v1/send_message"),
+      Uri.parse("http://localhost:80/api/v1/send_message"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
