@@ -1,4 +1,4 @@
-import 'package:ai_chat_frontend/chat/message_view.dart';
+import 'package:ai_chat_frontend/chat/views/message_view.dart';
 import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

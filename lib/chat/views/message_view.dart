@@ -30,9 +30,10 @@ class MessageView extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                          const Color.fromRGBO(63, 186, 227, 1),
-                          const Color.fromRGBO(51, 122, 200, 1)
-                        ])
+                        const Color.fromRGBO(63, 186, 227, 1),
+                        const Color.fromRGBO(51, 122, 200, 1)
+                      ],
+                    )
                   : null,
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(10),

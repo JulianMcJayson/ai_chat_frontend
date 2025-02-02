@@ -1,4 +1,4 @@
-import 'package:ai_chat_frontend/chat/chat_view.dart';
+import 'package:ai_chat_frontend/chat/views/chat_view.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {

@@ -1,7 +1,10 @@
 import 'package:ai_chat_frontend/chat/controllers/chat_controller.dart';
-import 'package:ai_chat_frontend/chat/message_view.dart';
+
+import 'package:ai_chat_frontend/chat/views/chat_list_view.dart';
+import 'package:ai_chat_frontend/chat/views/message_view.dart';
 import 'package:ai_chat_frontend/chat/models/message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gradient_icon/gradient_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,9 +53,11 @@ class _ChatViewState extends State<ChatView> {
         }),
         actions: [
           IconButton(
-              onPressed: () {
-                controller.clearMessages();
-              },
+              onPressed: controller.canAddChat
+                  ? () {
+                      controller.createNewChat();
+                    }
+                  : null,
               icon: const Icon(Icons.add_comment)),
           IconButton(
             icon: const Icon(Icons.more_horiz),
@@ -63,8 +68,7 @@ class _ChatViewState extends State<ChatView> {
       drawer: Drawer(
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
             SizedBox(
               height: 100,
@@ -73,10 +77,11 @@ class _ChatViewState extends State<ChatView> {
                   color: Colors.white,
                 ),
                 child: Row(
+                  spacing: 10,
                   children: [
                     Container(
-                      width: 50,
-                      height: 50,
+                      width: 45,
+                      height: 45,
                       margin: const EdgeInsets.all(10),
                       padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
@@ -89,17 +94,19 @@ class _ChatViewState extends State<ChatView> {
                                 Color.fromRGBO(51, 122, 200, 1)
                               ])),
                       child: CircleAvatar(
-                        radius: 50,
+                        radius: 45,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Me',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                    Expanded(
+                      flex: 15,
+                      child: Text(
+                        'Jaratpong Meethumkaewkla',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.ibmPlexSansThai(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                     Spacer(
@@ -124,7 +131,11 @@ class _ChatViewState extends State<ChatView> {
                 ),
                 child: TextButton(
                     iconAlignment: IconAlignment.start,
-                    onPressed: () {},
+                    onPressed: controller.canAddChat
+                        ? () {
+                            controller.createNewChat();
+                          }
+                        : null,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: 10,
@@ -138,7 +149,7 @@ class _ChatViewState extends State<ChatView> {
                                   Color.fromRGBO(63, 186, 227, 1),
                                   Color.fromRGBO(51, 122, 200, 1)
                                 ]),
-                            size: 30,
+                            size: 25,
                             offset: Offset(0, 0)),
                         GradientText(
                           'New Chat',
@@ -155,48 +166,14 @@ class _ChatViewState extends State<ChatView> {
                     )),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            ListTile(
-              title: Text(
-                'Item 1',
-                style: GoogleFonts.ibmPlexSansThai(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return ChatListView(chatList: controller.chatLists[index]);
+                },
+                itemCount: controller.chatLists.length,
               ),
-              trailing:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
-              shape: Border(
-                bottom: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text(
-                'Item 2',
-                style: GoogleFonts.ibmPlexSansThai(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16),
-              ),
-              trailing:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
-              shape: Border(
-                  bottom: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1,
-              )),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+            )
           ],
         ),
       ),
@@ -212,7 +189,7 @@ class _ChatViewState extends State<ChatView> {
                   alignment: Alignment.topCenter,
                   child: Selector<ChatController, List<Message>>(
                     selector: (context, controller) =>
-                        controller.messages.reversed.toList(),
+                        controller.chatList.messages.reversed.toList(),
                     builder: (context, messages, child) {
                       return ListView.separated(
                           shrinkWrap: true,
@@ -247,73 +224,78 @@ class ChatInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<ChatController>();
     return SafeArea(
-        bottom: true,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 120),
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: Color.fromARGB(255, 235, 243, 248),
-            border: Border(
-              top: BorderSide(
-                color: Colors.white,
-              ),
+      bottom: true,
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 120),
+        width: double.infinity,
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Color.fromARGB(255, 235, 243, 248),
+          border: Border(
+            top: BorderSide(
+              color: Colors.white,
             ),
           ),
-          child: Stack(
-            children: [
-              TextField(
-                focusNode: controller.focusNode,
-                onChanged: controller.onFieldChange,
-                controller: controller.textController,
-                maxLines: null,
-                textAlignVertical: TextAlignVertical.top,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(
-                    right: 42,
-                    left: 16,
-                    top: 18,
-                  ),
-                  hintText: "พิมพ์ข้อความ...",
-                  hintStyle: GoogleFonts.ibmPlexSansThai(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    color: Color.fromRGBO(49, 59, 65, 1),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+        ),
+        child: Stack(
+          children: [
+            TextField(
+              focusNode: controller.focusNode,
+              onChanged: controller.onFieldChange,
+              controller: controller.textController,
+              maxLines: null,
+              textAlignVertical: TextAlignVertical.top,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(
+                  right: 42,
+                  left: 16,
+                  top: 18,
+                ),
+                hintText: "พิมพ์ข้อความ...",
+                hintStyle: GoogleFonts.ibmPlexSansThai(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: Color.fromRGBO(49, 59, 65, 1),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                      onPressed:
-                          !controller.onSending ? controller.sendMessage : null,
-                      icon: !controller.onSending
-                          ? GradientIcon(
-                              icon: Icons.send,
-                              gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color.fromRGBO(63, 186, 227, 1),
-                                    Color.fromRGBO(51, 122, 200, 1)
-                                  ]),
-                              size: 30,
-                              offset: Offset(0, 0),
-                            )
-                          : Icon(Icons.stop)))
-            ],
-          ),
-        ));
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: IconButton(
+                  onPressed: !controller.onSendingMessage
+                      ? controller.sendMessage
+                      : null,
+                  icon: !controller.onSendingMessage &&
+                          controller.isTextFieldEnable
+                      ? GradientIcon(
+                          icon: Icons.send,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Color.fromRGBO(63, 186, 227, 1),
+                              Color.fromRGBO(51, 122, 200, 1),
+                            ],
+                          ),
+                          size: 30,
+                          offset: Offset(0, 0),
+                        )
+                      : SvgPicture.asset('assets/icons/cat_button_send.svg')),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
